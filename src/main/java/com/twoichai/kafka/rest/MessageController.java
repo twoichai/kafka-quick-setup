@@ -34,3 +34,6 @@ public class MessageController {
        return ResponseEntity.ok("Message queued successfully as JSON");
     }
 }
+
+// create command line runner with generator of random strings uuid (using class uuid) in stream or cycle and push it
+// through kafka, find a tool to measure latency and throughput

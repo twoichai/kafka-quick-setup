@@ -10,9 +10,15 @@ public class KafkaTopicConfig {
 
     // we create a new topic in our kafka broker
     @Bean
+    public NewTopic txtTopic() {
+        return TopicBuilder
+                .name("testTxtTopic")
+                .build();
+    }
+    @Bean
     public NewTopic wabTopic() {
         return TopicBuilder
-                .name("testTopic")
+                .name("testJsonTopic")
                 .build();
     }
 }
