@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class KafkaProducer {
+public class KafkaUUIDProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
-    // que a message to kafka server
+
     public void sendMessage(String msg) {
-        log.info(String.format("Sending message to test Topic: %s", msg));
+        log.info(String.format("UUID SENT: %s", msg));
         kafkaTemplate.send("testTxtTopic", msg);
     }
 }
