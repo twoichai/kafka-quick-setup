@@ -15,10 +15,4 @@ public class KafkaTopicConfig {
                 .name("testTxtTopic")
                 .build();
     }
-    @Bean
-    public NewTopic wabTopic() {
-        return TopicBuilder
-                .name("testJsonTopic")
-                .build();
-    }
 }
