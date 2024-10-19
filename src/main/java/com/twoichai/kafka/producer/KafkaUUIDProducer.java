@@ -18,20 +18,18 @@ public class KafkaUUIDProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     public void sendMessage(String msg) {
-        // Get the current timestamp
+
         long publishingTimestamp = Instant.now().toEpochMilli();
         String publishingTimestampStr = String.valueOf(publishingTimestamp);
 
-        // Building a message including the publishing time stamp
         Message<String> message = MessageBuilder
                 .withPayload(msg)
                 .setHeader(KafkaHeaders.TOPIC, "testTxtTopic")
                 .setHeader("publishingTimestamp", publishingTimestampStr)
                 .build();
-        log.info("Message with headers: {}", message.getHeaders());
-        kafkaTemplate.send(message);
-        // Logging options to check if a message has been produced
-        //log.info(String.format("UUID SENT: %s", message.getPayload()));
 
+        // log.info("Message with headers: {}", message.getHeaders());
+        log.info("UUID SENT: {}", message.getPayload());
+        kafkaTemplate.send(message);
     }
 }
