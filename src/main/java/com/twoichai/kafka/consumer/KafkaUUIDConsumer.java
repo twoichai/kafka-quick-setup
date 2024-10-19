@@ -20,7 +20,7 @@ public class KafkaUUIDConsumer {
     public void consume(String msg, @Header(KafkaHeaders.RECEIVED_TIMESTAMP) String key, @Header("publishingTimestamp") String publishingTimestampStr) {
         long publishingTimestamp = Long.parseLong(publishingTimestampStr);  // Convert String back to long
         long receivingTimestamp = Instant.now().toEpochMilli();
-
-        System.out.println("Publishing time needed: " + (receivingTimestamp - publishingTimestamp) + " ms");
+        System.out.println("Consumed message: " + msg);
+        System.out.println("Publishing time needed for UUID: " + (receivingTimestamp - publishingTimestamp) + " ms");
     }
 }

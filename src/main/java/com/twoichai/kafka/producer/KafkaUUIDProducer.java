@@ -29,7 +29,7 @@ public class KafkaUUIDProducer {
                 .setHeader("publishingTimestamp", publishingTimestampStr)
                 .build();
         log.info("Message with headers: {}", message.getHeaders());
-        // kafkaTemplate.send(message);
+        kafkaTemplate.send(message);
         // Logging options to check if a message has been produced
         //log.info(String.format("UUID SENT: %s", message.getPayload()));
 
