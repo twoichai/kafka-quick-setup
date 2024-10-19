@@ -17,10 +17,10 @@ public class KafkaUUIDConsumer {
     private final KafkaUUIDProducer kafkaUUIDProducer;
 
     @KafkaListener(topics = "testTxtTopic", groupId = "myGroup")
-    public void consume(String msg, @Header(KafkaHeaders.RECEIVED_TIMESTAMP) String key, @Header("publishingTimestamp") long publishingTimestamp) {
+    public void consume(String msg, @Header(KafkaHeaders.RECEIVED_TIMESTAMP) String key, @Header("publishingTimestamp") String publishingTimestampStr) {
+        long publishingTimestamp = Long.parseLong(publishingTimestampStr);  // Convert String back to long
         long receivingTimestamp = Instant.now().toEpochMilli();
-        // kafkaUUIDProducer.sendMessage(msg);
-        // log.info(String.format("UUID CONSUMED: %s", msg));
-       // System.out.println("Publishing time needed: " + (receivingTimestamp - publishingTimestamp) + " ms");
+
+        System.out.println("Publishing time needed: " + (receivingTimestamp - publishingTimestamp) + " ms");
     }
 }
