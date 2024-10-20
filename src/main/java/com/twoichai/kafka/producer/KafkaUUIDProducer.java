@@ -7,29 +7,46 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import java.time.Instant;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Slf4j
 public class KafkaUUIDProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(String msg) {
+    private AtomicInteger messageCount = new AtomicInteger(0);
 
-        long publishingTimestamp = Instant.now().toEpochMilli();
-        String publishingTimestampStr = String.valueOf(publishingTimestamp);
+    public KafkaUUIDProducer(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(this::logThroughput, 0, 1, TimeUnit.SECONDS);  // Log every second
+    }
+
+    public void sendMessage(String msg) {
+        String publishingTimestamp = String.valueOf(Instant.now().toEpochMilli());
 
         Message<String> message = MessageBuilder
                 .withPayload(msg)
                 .setHeader(KafkaHeaders.TOPIC, "testTxtTopic")
-                .setHeader("publishingTimestamp", publishingTimestampStr)
+                .setHeader("publishingTimestamp", publishingTimestamp)
                 .build();
 
-        // log.info("Message with headers: {}", message.getHeaders());
-        log.info("UUID SENT: {}", message.getPayload());
         kafkaTemplate.send(message);
+
+
+        messageCount.incrementAndGet();
+        log.info("UUID SENT: {}", message.getPayload());
+    }
+
+    private void logThroughput() {
+        int count = messageCount.getAndSet(0);  // Reset the counter after logging
+        log.info("Producer Throughput: {} messages per second", count);
     }
 }
