@@ -8,7 +8,6 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopicConfig {
 
-    // we create a new topic in our kafka broker
     @Bean
     public NewTopic txtTopic() {
         return TopicBuilder

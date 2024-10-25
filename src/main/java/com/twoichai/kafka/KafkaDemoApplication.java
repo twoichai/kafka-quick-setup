@@ -12,7 +12,3 @@ public class KafkaDemoApplication {
 		SpringApplication.run(KafkaDemoApplication.class, args);
 	}
 }
-// uuid same size, check how much units per x amount of time
-// todo: collect timestamp time
-// todo: calculation of throughput
-// through kafka, find a tool to measure latency and throughput

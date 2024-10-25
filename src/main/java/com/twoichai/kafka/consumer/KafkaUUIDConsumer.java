@@ -35,7 +35,7 @@ public class KafkaUUIDConsumer {
 
             latencies.add(String.valueOf(latency));
 
-            log.info("Message: {} | Latency: {} ms", msg, latency);
+            //log.info("Message: {} | Latency: {} ms", msg, latency);
         } catch (NumberFormatException e) {
             log.error("Error parsing timestamp: {}", e.getMessage());
         }

@@ -1,6 +1,5 @@
 package com.twoichai.kafka.producer;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -15,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import java.time.Instant;
 
 @Service
-//@RequiredArgsConstructor
 @Slf4j
 public class KafkaUUIDProducer {
 
@@ -42,7 +40,7 @@ public class KafkaUUIDProducer {
 
 
         messageCount.incrementAndGet();
-        log.info("UUID SENT: {}", message.getPayload());
+        //log.info("UUID SENT: {}", message.getPayload());
     }
 
     private void logThroughput() {
