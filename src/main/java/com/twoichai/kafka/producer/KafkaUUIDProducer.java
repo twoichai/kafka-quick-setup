@@ -19,12 +19,12 @@ public class KafkaUUIDProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    private AtomicInteger messageCount = new AtomicInteger(0);
+    private final AtomicInteger messageCount = new AtomicInteger(0);
 
     public KafkaUUIDProducer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(this::logThroughput, 0, 1, TimeUnit.MINUTES);  // Log every second
+        scheduler.scheduleAtFixedRate(this::logThroughput, 0, 1, TimeUnit.MINUTES);  // Log every minute
     }
     public void sendMessage(String msg) {
         String publishingTimestamp = String.valueOf(Instant.now().toEpochMilli());
@@ -42,6 +42,6 @@ public class KafkaUUIDProducer {
     }
     private void logThroughput() {
         int count = messageCount.getAndSet(0);  // Reset the counter after logging
-        log.info("Producer Throughput: {} messages per second", count);
+        log.info("Producer Throughput: {} messages per minute", count);
     }
 }

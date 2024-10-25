@@ -15,7 +15,7 @@ public class UUIDProducerService {
 
     public void produceUIIDs() {
         Stream.generate(UUID::randomUUID)
-                .limit(100000)
+                .limit(100000000)
                 .forEach(uuid -> kafkaUUIDProducer.sendMessage(uuid.toString()));
     }
 }

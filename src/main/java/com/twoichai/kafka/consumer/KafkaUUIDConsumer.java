@@ -17,13 +17,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class KafkaUUIDConsumer {
 
-    private AtomicInteger messageCount = new AtomicInteger(0);
+    private final AtomicInteger messageCount = new AtomicInteger(0);
 
-    private ConcurrentLinkedQueue<String> latencies = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<String> latencies = new ConcurrentLinkedQueue<>();
 
     public KafkaUUIDConsumer() {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(this::logThroughputAndEvaluateLatencies, 0, 1, TimeUnit.SECONDS);  // Log every second
+        scheduler.scheduleAtFixedRate(this::logThroughputAndEvaluateLatencies, 0, 1, TimeUnit.MINUTES);  // Log every minute
     }
 
     @KafkaListener(topics = "testTxtTopic", groupId = "myGroup")
@@ -41,7 +41,7 @@ public class KafkaUUIDConsumer {
 
     private void logThroughputAndEvaluateLatencies() {
         int count = messageCount.getAndSet(0);  // Reset the counter after logging
-        log.info("Consumer Throughput: {} messages per second", count);
+        log.info("Consumer Throughput: {} messages per minute", count);
 
         if (!latencies.isEmpty()) {
             List<String> latencyList = new ArrayList<>(latencies);
@@ -72,7 +72,7 @@ public class KafkaUUIDConsumer {
                 log.info("99th Percentile Latency: {} ms", p99);
             }
         } else {
-            log.info("No latency data to evaluate in the last second.");
+            log.info("No latency data to evaluate in the last minute.");
         }
     }
 }
