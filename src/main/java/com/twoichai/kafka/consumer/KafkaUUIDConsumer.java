@@ -29,12 +29,9 @@ public class KafkaUUIDConsumer {
     @KafkaListener(topics = "testTxtTopic", groupId = "myGroup")
     public void consume(String msg, @Header("publishingTimestamp") String publishingTimestamp) {
         String receivingTimestamp = String.valueOf(Instant.now().toEpochMilli());
-
         try {
             long latency = Long.parseLong(receivingTimestamp) - Long.parseLong(publishingTimestamp);
-
             latencies.add(String.valueOf(latency));
-
             //log.info("Message: {} | Latency: {} ms", msg, latency);
         } catch (NumberFormatException e) {
             log.error("Error parsing timestamp: {}", e.getMessage());
@@ -68,7 +65,6 @@ public class KafkaUUIDConsumer {
                 long p50 = latencyValues.get((int) (latencyValues.size() * 0.5));
                 long p90 = latencyValues.get((int) (latencyValues.size() * 0.9));
                 long p99 = latencyValues.get((int) (latencyValues.size() * 0.99));
-
                 log.info("Average Latency: {} ms", avgLatency);
                 log.info("Max Latency: {} ms", maxLatency);
                 log.info("50th Percentile (Median) Latency: {} ms", p50);

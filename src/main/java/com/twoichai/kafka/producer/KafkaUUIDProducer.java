@@ -24,9 +24,8 @@ public class KafkaUUIDProducer {
     public KafkaUUIDProducer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(this::logThroughput, 0, 1, TimeUnit.SECONDS);  // Log every second
+        scheduler.scheduleAtFixedRate(this::logThroughput, 0, 1, TimeUnit.MINUTES);  // Log every second
     }
-
     public void sendMessage(String msg) {
         String publishingTimestamp = String.valueOf(Instant.now().toEpochMilli());
 
@@ -38,11 +37,9 @@ public class KafkaUUIDProducer {
 
         kafkaTemplate.send(message);
 
-
         messageCount.incrementAndGet();
         //log.info("UUID SENT: {}", message.getPayload());
     }
-
     private void logThroughput() {
         int count = messageCount.getAndSet(0);  // Reset the counter after logging
         log.info("Producer Throughput: {} messages per second", count);
